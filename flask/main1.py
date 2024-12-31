@@ -29,7 +29,7 @@ def get_qa_chain():
     retriever = vectordb1.as_retriever()
 
     prompt_template = """Use the following pieces of context to answer the question at the end.
-If you don't know the answer, just say that you don't know, don't try to make up an answer.
+If you don't know the answer, just say to contact an specialist, don't try to make up an answer.
 Provide de answer in Portuguese.
 
 CONTEXT: {context}
@@ -76,7 +76,7 @@ def get_db_connection():
 @app.route('/')
 def index():
     conn = get_db_connection()
-    posts = conn.execute('SELECT * FROM posts').fetchall()
+    posts = conn.execute('SELECT * FROM posts WHERE id > 1 ORDER BY id DESC').fetchall()
     conn.close()
     return render_template('index.html', posts=posts)
 
@@ -88,7 +88,7 @@ def create():
         # Get the title and save it in a variable
         title = request.form['title']
         # Get the content the user wrote and save it in a variable
-        content = request.form['content']
+        #content = request.form['content']
         if not title:
             flash('Title is required!')
         else:

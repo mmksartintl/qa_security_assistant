@@ -1,20 +1,9 @@
-FROM python:3.10
-
-RUN apt-get update && apt-get install -y pip
+FROM genai_img
 
 WORKDIR /app
 
-COPY requirements.txt .
-
-RUN pip install -r requirements.txt
-
-RUN pip install jinja2
-RUN pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-
-RUN pip install --no-cache-dir sentence-transformers
-
 COPY . .
 
-CMD ["flask", "--app", "main1.py", "run", "--host", "0.0.0.0"]
+EXPOSE 5000
 
-
+CMD python3 init_db.py; flask --app main1.py run --host=0.0.0.0
